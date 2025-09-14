@@ -19,21 +19,48 @@ import { useCoinsContext } from "../context/CoinsContext";
  * @component
  * @returns {JSX.Element}
  */
-export default function CoinList() {
+function CoinList() {
   const { coins, loading, error } = useCoinsContext();
 
-  if (loading) return <p>Carregando...</p>;
-  if (error) return <p>Erro: {error.message}</p>;
+  if (loading)
+    return (
+      <div className="p-6">
+        <p className="text-sm text-stone-500">Carregando...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="p-6">
+        <p className="text-sm text-red-500">Erro: {error.message}</p>
+      </div>
+    );
 
   return (
-    <ul className="space-y-2">
-      {Object.entries(coins).map(([symbol, price]) => (
-        <NavLink key={symbol} to={`/${symbol}`} >
-          <li className="p-2 border rounded shadow-sm">
-            {symbol.toUpperCase()} - ${parseFloat(price).toFixed(2)}
+    <aside className="w-full">
+      <ul className="space-y-3">
+        {Object.entries(coins).map(([symbol, price]) => (
+          <li key={symbol}>
+            <NavLink
+              to={`/${symbol}`}
+              className="block"
+            >
+              <div className="flex items-center justify-between p-4 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow duration-150 bg-white">
+                <div className="flex items-center space-x-3">
+                  <div className="text-base font-medium text-stone-800">
+                    {symbol.toUpperCase()}
+                  </div>
+                </div>
+
+                <div className="text-sm font-semibold text-stone-700">
+                  ${parseFloat(price).toFixed(2)}
+                </div>
+              </div>
+            </NavLink>
           </li>
-        </NavLink>
-      ))}
-    </ul>
+        ))}
+      </ul>
+    </aside>
   );
 }
+
+export default CoinList;

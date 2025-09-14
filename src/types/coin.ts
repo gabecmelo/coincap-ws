@@ -12,3 +12,19 @@ export interface CoinPageHeaderProps {
   currentPrice: string;
   variation: string;
 }
+
+export interface CoinGraphProps {
+  coinHistory: CoinHistory;
+}
+
+export interface HistoryProps {
+  coinHistory: CoinHistory
+}
+
+
+export interface CoinsContextValue {
+  coins: CoinMap;
+  history: CoinHistory[];
+  loading: boolean;
+  error: Error | null;
+}

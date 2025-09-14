@@ -1,0 +1,1 @@
+export const ASSETS = ["bitcoin", "ethereum", "monero", "solana", "cardano", "xrp", "dogecoin", "tron", "hyperliquid"];

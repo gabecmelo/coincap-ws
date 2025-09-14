@@ -1,6 +1,6 @@
 import type { CoinMap } from "../types/coin";
+import { ASSETS } from "../utils/assets";
 
-const ASSETS = ["bitcoin", "ethereum", "monero", "solana", "cardano", "xrp", "dogecoin", "tron", "hyperliquid"];
 const WS_URL = `wss://ws.coincap.io/prices?assets=${ASSETS.join(",")}`;
 
 /**
