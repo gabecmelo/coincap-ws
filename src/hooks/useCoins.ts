@@ -4,6 +4,38 @@ import { saveCoins, loadCoins, saveHistory, loadHistory } from "../services/db";
 import { connectWebSocket } from "../api/coincap";
 import type { CoinMap, CoinHistory } from "../types/coin";
 
+/**
+ * Hook que gerencia os dados de moedas (coins) em tempo real via WebSocket.
+ *
+ * Ele:
+ * - Conecta ao WebSocket da CoinCap
+ * - Atualiza os preços em tempo real
+ * - Mantém histórico (últimos 10 valores por ativo)
+ * - Faz cache local (IndexedDB/localStorage)
+ *
+ * @returns {{
+ *   coins: CoinMap,
+ *   history: CoinHistory[],
+ *   loading: boolean,
+ *   error: Error | null
+ * }}
+ *
+ * @example
+ * ```tsx
+ * const { coins, history, loading, error } = useCoins();
+ *
+ * if (loading) return <p>Carregando...</p>;
+ * if (error) return <p>Erro: {error.message}</p>;
+ *
+ * return (
+ *   <div>
+ *     {Object.entries(coins).map(([symbol, price]) => (
+ *       <p key={symbol}>{symbol}: {price}</p>
+ *     ))}
+ *   </div>
+ * );
+ * ```
+ */
 export function useCoins() {
   const [coins, setCoins] = useState<CoinMap>({});
   const [history, setHistory] = useState<CoinHistory[]>([]);
