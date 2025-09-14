@@ -12,7 +12,7 @@ function CoinPageHeader({ symbol, currentPrice, variation }: CoinPageHeaderProps
         className={`text-sm font-medium ${parseFloat(variation) >= 0 ? "text-green-600" : "text-red-600"
           }`}
       >
-        Variação recente: {variation}%
+        Variação: {variation}%
       </p>
     </div>
   );

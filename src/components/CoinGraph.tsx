@@ -7,7 +7,7 @@ interface CoinGraphProps {
 
 function CoinGraph({ coinHistory }: CoinGraphProps) {
   const chartData = coinHistory.history.map((price, index) => ({
-    index,
+    index: index + 1,
     price: parseFloat(price),
   }));
 

@@ -7,11 +7,11 @@ interface HistoryProps {
 function History({ coinHistory }: HistoryProps) {
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-2">Histórico recente</h2>
+      <h2 className="text-lg font-semibold mb-2">Histórico recente (últimos 10)</h2>
       <ul className="space-y-1">
-        {coinHistory.history.map((price, i) => (
+        {coinHistory.history.slice().reverse().map((price, i) => (
           <li key={i} className="text-sm">
-            {i} - ${parseFloat(price).toFixed(2)}
+            {i + 1} - ${`${parseFloat(price).toFixed(2)} ${i + 1 == 1 ? "(Valor mais recente)" : ""} `}
           </li>
         ))}
       </ul>
