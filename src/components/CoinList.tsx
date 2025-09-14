@@ -1,4 +1,5 @@
-import { useCoins } from "../hooks/useCoins";
+import { NavLink } from "react-router-dom";
+import { useCoinsContext } from "../context/CoinsContext";
 
 /**
  * CoinList
@@ -19,7 +20,7 @@ import { useCoins } from "../hooks/useCoins";
  * @returns {JSX.Element}
  */
 export default function CoinList() {
-  const { coins, loading, error } = useCoins();
+  const { coins, loading, error } = useCoinsContext();
 
   if (loading) return <p>Carregando...</p>;
   if (error) return <p>Erro: {error.message}</p>;
@@ -27,9 +28,11 @@ export default function CoinList() {
   return (
     <ul className="space-y-2">
       {Object.entries(coins).map(([symbol, price]) => (
-        <li key={symbol} className="p-2 border rounded shadow-sm">
-          {symbol.toUpperCase()} - ${parseFloat(price).toFixed(2)}
-        </li>
+        <NavLink key={symbol} to={`/${symbol}`} >
+          <li className="p-2 border rounded shadow-sm">
+            {symbol.toUpperCase()} - ${parseFloat(price).toFixed(2)}
+          </li>
+        </NavLink>
       ))}
     </ul>
   );

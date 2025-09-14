@@ -6,3 +6,9 @@ export interface CoinHistory {
   symbol: string;
   history: string[];
 }
+
+export interface CoinPageHeaderProps {
+  symbol: string;
+  currentPrice: string;
+  variation: string;
+}
