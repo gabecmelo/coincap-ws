@@ -6,7 +6,7 @@ function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-6 text-md text-stone-400">
-        © Desenvolvido por <a className="text-sky-400 hover:underline" href="https://www.linkedin.com/in/gabrielc-melo/">Gabriel Cabral Melo</a> 
+        © Desenvolvido por <a className="text-sky-400 hover:underline" target="_blank" href="https://www.linkedin.com/in/gabrielc-melo/">Gabriel Cabral Melo</a> 
       </div>
     </footer>
   );
