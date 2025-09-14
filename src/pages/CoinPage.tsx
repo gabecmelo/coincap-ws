@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useCoinsContext } from "../context/CoinsContext";
 import CoinPageHeader from "../components/CoinPageHeader";
 import CoinGraph from "../components/CoinGraph";
 import History from "../components/History";
 import { ASSETS } from "../utils/assets";
+import { useCoinsContext } from "../context/useCoinsContext";
 // import CoinList from "../components/CoinList"; // Descomente caso queira visualizar a lista lateral
 
 /**

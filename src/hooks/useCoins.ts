@@ -89,11 +89,11 @@ export function useCoins() {
     // Conecta WebSocket
     const ws = connectWebSocket(
       (data) => processMessage(data),
-      (_err) => setError(new Error("Erro na conexão WebSocket"))
+      () => setError(new Error("Erro na conexão WebSocket"))
     );
 
     return () => ws.close();
-  }, []);
+  }, []); //eslint-disable-line
 
   // Salvar no cache
   useEffect(() => { if (Object.keys(coins).length > 0) saveCoins(coins).catch(console.error); }, [coins]);

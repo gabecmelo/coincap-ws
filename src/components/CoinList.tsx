@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useCoinsContext } from "../context/CoinsContext";
+import { useCoinsContext } from "../context/useCoinsContext";
 
 /**
  * CoinList
