@@ -1,69 +1,127 @@
-# React + TypeScript + Vite
+# CoinCap WS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação React que consome preços em tempo real via WebSocket (CoinCap).
 
-Currently, two official plugins are available:
+## 🔹 Descrição
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A aplicação conecta ao WebSocket público do CoinCap para listar preços de ativos em tempo real, exibir detalhe por ativo com histórico recente (últimos 10 valores) e armazenar cache local em **IndexedDB**.
 
-## Expanding the ESLint configuration
+## 🔹 Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Conexão a WebSocket do CoinCap e recebimento de mensagens JSON em tempo real.
+* Lista de ativos monitorados com preços atualizados em tempo real.
+* Página de detalhe do ativo com:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  * Nome (símbolo/symbol) do ativo.
+  * Preço atual formatado com 2 casas decimais.
+  * Variação calculada a partir do primeiro e último valor do histórico da sessão.
+  * Gráfico exibindo o histórico da sessão (últimos 10 valores).
+* Cache local com IndexedDB (stores `coins` e `history`).
+* Testes utilizando: **Vitest + Testing Library**.
+* Estilização com: **Tailwind CSS**.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 💻 Tecnologias
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* React + Vite
+* TypeScript
+* Tailwind CSS
+* idb (IndexedDB)
+* Vitest + @testing-library/react
+* lodash.throttle
+
+## ⚙️ Como rodar (instalação)
+
+```bash
+git clone https://github.com/gabecmelo/coincap-ws.git
+#ou caso tenha uma chave ssh:
+git clone git@github.com:gabecmelo/coincap-ws.git
+
+cd coincap-ws
+
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Desenvolvimento
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
+# abrir http://localhost:5173/ por padrão ou a URL mostrada no terminal
 ```
+
+### Build e Preview
+
+```bash
+npm run build
+
+npm run preview
+# abrir http://localhost:4173/ por padrão ou a URL mostrada no terminal
+```
+
+> Observação: `preview` serve o bundle estático.
+
+## 🗂 Estrutura do projeto (resumo)
+
+```
+src/
+├─ __tests__              # Pasta de testes
+├─ api/
+│  └─ coincap.ts          # Conexão WebSocket / helper
+├─ components/
+│  ├─ CoinGraph.tsx       # Gráfico
+│  ├─ CoinList.tsx        # Lista de ativos
+│  ├─ CoinPageHeader.tsx
+│  ├─ Footer.tsx
+│  ├─ Header.tsx
+│  └─ History.tsx         # Histórico dos ativos
+├─ context/
+│  ├─ CoinsContext.tsx    # CoinsProvider
+│  └─ useCoinsContext.ts  # hook de consumo do contexto
+├─ hooks/
+│  └─ useCoins.ts         # lógica do WebSocket, cache e histórico
+├─ layout/
+│  └─ MainLayout.tsx
+├─ pages/
+│  ├─ HomePage.tsx        # Página principal
+│  └─ CoinPage.tsx        # Página para cada moeda existente
+├─ services/
+│  └─ db.ts               # initDB, save/load coins/history
+├─ api/
+│  └─ coincap.ts          # connectWebSocket
+├─ utils/
+│  └─ assets.ts           # lista de ASSETS (ativos utilizados)
+└─ main.tsx               # BrowserRouter + basename
+```
+
+## 🔧 Configurações importantes
+
+* **basename** do `BrowserRouter` é definido via `import.meta.env.BASE_URL` (Vite) para suportar `dev` (`/`) e `preview`/deploy em subpath (`/coincap-ws/`).
+* Porém, ambos estão utilizando `/coincap-ws` com as últimas configurações do `vite.config.ts` aplicadas para simplificação.
+
+
+## 🧪 Testes
+
+* Rodar os testes:
+
+```bash
+npm run test
+# ou
+npm run test:watch
+# ou
+npm run coverage
+```
+
+## 🔁 IndexedDB (cache local)
+
+* DB: `CoinCapDB` com stores `coins` e `history`.
+* Para limpar e simular primeira execução caso necessário:
+
+  * DevTools → Application → IndexedDB → Delete Database
+  * Ou no console: `indexedDB.deleteDatabase('CoinCapDB')`
+
+## 📌 Considerações finais
+
+* Caso tenha alguma dúvida, sinta-se livre para enviar uma mensagem no meu email: contatogabemelo@gmail.com
+
+## 📝 Autor
+
+Gabriel Melo
